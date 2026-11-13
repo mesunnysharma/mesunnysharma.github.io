@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunny Kumar, Backend Developer</title>
+<meta name="description" content="Sunny Kumar is a backend developer in Bangalore building event pipelines, access control and search for conversation analytics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Plan: cool blueprint paper, ink text, one cobalt signal colour, amber only for status.
+   Layout idea: a single column of sections like stages in a pipeline, each with a mono "stage" label. */
+:root{
+  --paper:#eef1f5;
+  --card:#ffffff;
+  --ink:#0f1620;
+  --muted:#586274;
+  --line:#d3d9e2;
+  --signal:#2447f0;
+  --signal-soft:#e0e6fd;
+  --amber:#c47a00;
+  --ok:#16794a;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0c1118;--card:#131a24;--ink:#e8edf5;--muted:#93a0b5;--line:#243042;
+    --signal:#7b93ff;--signal-soft:#1b2750;--amber:#e3a33a;--ok:#4cc38a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0c1118;--card:#131a24;--ink:#e8edf5;--muted:#93a0b5;--line:#243042;
+  --signal:#7b93ff;--signal-soft:#1b2750;--amber:#e3a33a;--ok:#4cc38a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--signal);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--signal);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-0.02em}
+p{margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{font-family:var(--font-display);font-weight:800;font-size:20px;color:var(--ink);text-decoration:none;letter-spacing:-0.03em}
+.brand span{color:var(--signal)}
+.links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.links a{font-family:var(--font-mono);font-size:13px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px}
+.links a:hover{color:var(--ink);background:var(--signal-soft)}
+
+/* sections */
+section{padding:72px 0 8px}
+.stage{font-family:var(--font-mono);font-size:13px;color:var(--signal);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.stage::after{content:"";height:1px;background:var(--line);flex:1}
+h2{font-size:clamp(30px,5vw,44px);margin-bottom:28px}
+
+/* hero */
+#home{padding-top:56px}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:13px;color:var(--muted);border:1px solid var(--line);background:var(--card);padding:5px 12px;border-radius:999px;margin-bottom:22px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+h1{font-size:clamp(40px,7.2vw,76px);font-weight:800}
+h1 em{font-style:normal;color:var(--signal)}
+.lead{margin-top:20px;font-size:19px;color:var(--muted);max-width:34em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{font-family:var(--font-mono);font-size:14px;font-weight:500;text-decoration:none;padding:12px 18px;border-radius:8px;border:1px solid var(--ink);color:var(--ink);background:transparent;display:inline-block}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:hover{transform:translateY(-1px)}
+.social{display:flex;gap:18px;margin-top:22px;font-family:var(--font-mono);font-size:14px;flex-wrap:wrap}
+.pipe{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 10px}
+.pipe h3{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0;margin-bottom:6px;text-transform:uppercase}
+.pipe svg{width:100%;height:auto;display:block}
+.pipe .cap{font-size:14px;color:var(--muted);padding:6px 2px 8px}
+.node rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+.node text{font-family:var(--font-mono);font-size:12px;fill:var(--ink);text-anchor:middle}
+.node .sub{fill:var(--muted);font-size:10px}
+.wire{stroke:var(--line);stroke-width:2;fill:none}
+.flow{stroke:var(--signal);stroke-width:2.5;fill:none;stroke-dasharray:6 10;animation:flow 1.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none}html{scroll-behavior:auto}}
+
+/* numbers */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.fact b{display:block;font-family:var(--font-display);font-size:38px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+.fact span{font-size:14px;color:var(--muted)}
+
+/* about */
+.about{display:grid;grid-template-columns:1.4fr 1fr;gap:36px}
+.about p+p{margin-top:14px}
+.kv{list-style:none;margin:0;padding:0;font-family:var(--font-mono);font-size:14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.kv li{display:flex;justify-content:space-between;gap:16px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.kv li:last-child{border-bottom:0}
+.kv span{color:var(--muted)}
+.kv b{font-weight:500;text-align:right}
+
+/* experience */
+.job{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:26px 0;border-top:1px solid var(--line)}
+.job:first-of-type{border-top:0;padding-top:0}
+.when{font-family:var(--font-mono);font-size:13px;color:var(--muted)}
+.job h3{font-size:24px}
+.where{color:var(--muted);margin:4px 0 12px}
+.job ul{margin:0;padding-left:20px}
+.job li{margin-bottom:8px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tag{font-family:var(--font-mono);font-size:12px;padding:3px 10px;border-radius:999px;background:var(--signal-soft);color:var(--signal)}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.group{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.group h3{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:15px;padding:5px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+
+/* projects */
+.projects{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.proj{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.proj h3{font-size:22px}
+.proj p{color:var(--muted);font-size:16px}
+.proj .tags{margin-top:auto}
+.proj a{font-family:var(--font-mono);font-size:13px}
+.note{margin-top:16px;font-size:14px;color:var(--muted)}
+
+/* contact */
+.contact{background:var(--ink);color:var(--paper);border-radius:16px;padding:40px;display:grid;grid-template-columns:1.2fr 1fr;gap:28px}
+.contact h2{margin-bottom:12px;color:var(--paper)}
+.contact p{opacity:.8}
+.contact ul{list-style:none;margin:0;padding:0;font-family:var(--font-mono);font-size:15px;display:grid;gap:12px;align-content:center}
+.contact a{color:var(--paper)}
+.contact li span{opacity:.6;display:block;font-size:12px}
+footer{padding:44px 0 56px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .hero,.about,.contact{grid-template-columns:1fr}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .job{grid-template-columns:1fr;gap:6px}
+  .skills,.projects{grid-template-columns:1fr}
+  .links a{padding:6px 7px}
+  .contact{padding:26px}
+}
+@media (max-width:520px){ .links{display:none} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#home">sunny<span>.</span>kumar</a>
+    <div class="links">
+      <a href="#about">about</a>
+      <a href="#experience">experience</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="home">
+  <div class="hero">
+    <div>
+      <div class="status"><span class="dot"></span>Open to backend roles in Bangalore, remote or relocation</div>
+      <h1>Backend developer for systems that <em>listen</em> to conversations.</h1>
+      <p class="lead">I am Sunny Kumar. At ConvoZen.AI, a NoBroker product, I build the pipelines, access control and search behind a multi-tenant voice and chat analytics platform, using Java Spring Boot, Kafka, MongoDB, Elasticsearch and Redis.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">View projects</a>
+        <a class="btn" href="Sunny_Kumar_Resume.pdf">Download resume</a>
+      </div>
+      <div class="social">
+        <a href="https://github.com/mesunnysharma">GitHub</a>
+        <a href="https://www.linkedin.com/in/sunny-kumar-517657229">LinkedIn</a>
+        <a href="mailto:8507sunny@gmail.com">Email</a>
+      </div>
+    </div>
+
+    <div class="pipe" role="img" aria-label="Diagram of an event pipeline: Kafka, then Redis deduplication, then MongoDB upsert, then Elasticsearch search">
+      <h3>An event pipeline I work on</h3>
+      <svg viewBox="0 0 400 330" aria-hidden="true">
+        <g class="node"><rect x="110" y="10" width="180" height="52" rx="8"/><text x="200" y="33">Kafka</text><text class="sub" x="200" y="50">events arrive in batches</text></g>
+        <path class="wire" d="M200 62 V98"/><path class="flow" d="M200 62 V98"/>
+        <g class="node"><rect x="110" y="98" width="180" height="52" rx="8"/><text x="200" y="121">Redis</text><text class="sub" x="200" y="138">drop duplicates</text></g>
+        <path class="wire" d="M200 150 V186"/><path class="flow" d="M200 150 V186"/>
+        <g class="node"><rect x="110" y="186" width="180" height="52" rx="8"/><text x="200" y="209">MongoDB</text><text class="sub" x="200" y="226">upsert, any order</text></g>
+        <path class="wire" d="M200 238 V274"/><path class="flow" d="M200 238 V274"/>
+        <g class="node"><rect x="110" y="274" width="180" height="52" rx="8"/><text x="200" y="297">Elasticsearch</text><text class="sub" x="200" y="314">search and analytics</text></g>
+      </svg>
+      <p class="cap">Fail fast at the gate, fail safe in the pipe.</p>
+    </div>
+  </div>
+</section>
+
+<section id="numbers">
+  <div class="stage">01 / numbers</div>
+  <div class="facts">
+    <div class="fact"><b>88K+</b><span>chat documents bulk-ingested for one enterprise client</span></div>
+    <div class="fact"><b>7</b><span>MongoDB collections designed for role-based access control</span></div>
+    <div class="fact"><b>300+</b><span>coding problems solved in C++, Python and SQL</span></div>
+    <div class="fact"><b>2025</b><span>B.Tech in Computer Science, NIT Warangal</span></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="stage">02 / about</div>
+  <h2>I like systems that fail safely.</h2>
+  <div class="about">
+    <div>
+      <p>I started at ConvoZen.AI as a backend intern in April 2025 and joined full-time in July 2025. I work across several services, so I write the Java Spring Boot code and also ship it: Docker images, Kubernetes on GKE, TLS between services.</p>
+      <p>Most of my work is about data that arrives late, twice, or in the wrong order, and still has to end up correct. I enjoy the design questions in that: where to deduplicate, what to retry, and what to reject early.</p>
+    </div>
+    <ul class="kv">
+      <li><span>based in</span><b>Bangalore, India</b></li>
+      <li><span>role</span><b>Software Developer (Backend)</b></li>
+      <li><span>education</span><b>B.Tech CSE, NIT Warangal</b></li>
+      <li><span>looking for</span><b>Java / Spring Boot backend</b></li>
+    </ul>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="stage">03 / experience</div>
+  <h2>Where I have worked.</h2>
+
+  <div class="job">
+    <div class="when">Apr 2025 to now</div>
+    <div>
+      <h3>Software Developer (Backend)</h3>
+      <div class="where">ConvoZen.AI (NoBroker Technologies), Bangalore. Intern from April 2025, full-time from July 2025.</div>
+      <ul>
+        <li>Built role-based access control from scratch in the core Spring Boot service, with seven MongoDB collections and a phased six-week plan.</li>
+        <li>Built an ingestion pipeline for call and chat data, including chat session resolution and an audio preprocessing stage that checks codec, channels and sample rate.</li>
+        <li>Designed an events pipeline with Redis deduplication, partial-batch success, out-of-order handling through MongoDB upserts, and cleanup of stale chat sessions.</li>
+        <li>Added multi-channel message ingestion (Instagram, Facebook, Twitter, LinkedIn, email) and bulk-loaded 88K+ chat documents for an enterprise client.</li>
+        <li>Added ML features: abusive-language detection with Gemini 2.5 Flash and music detection with PANNs, stored in Elasticsearch.</li>
+        <li>Led a MySQL TLS and mTLS migration across GraphQL and Django services.</li>
+        <li>Cut container size and scanner findings by replacing a 15GB base image with python:3.10-slim.</li>
+        <li>Deployed and debugged production on Kubernetes (GKE): Kafka consumer groups, Elasticsearch, GCS access and SSL chains.</li>
+      </ul>
+      <div class="tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Python</span><span class="tag">Kafka</span><span class="tag">MongoDB</span><span class="tag">Elasticsearch</span><span class="tag">Redis</span><span class="tag">Kubernetes</span><span class="tag">GCP</span></div>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="when">Internship</div>
+    <div>
+      <h3>Intern</h3>
+      <div class="where">D&amp;Wtech. Dyanankur, an online quiz platform for teachers.</div>
+      <ul>
+        <li>Built quiz creation and evaluation features and role-based access for teachers and students.</li>
+        <li>Tuned database queries and API performance, and built a responsive interface.</li>
+      </ul>
+      <div class="tags"><span class="tag">MongoDB</span><span class="tag">Express.js</span><span class="tag">React</span><span class="tag">Node.js</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="stage">04 / skills</div>
+  <h2>What I work with.</h2>
+  <div class="skills">
+    <div class="group"><h3>Backend</h3><div class="chips"><span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">Python</span><span class="chip">Django</span><span class="chip">Node.js</span><span class="chip">Express.js</span><span class="chip">REST APIs</span><span class="chip">GraphQL</span></div></div>
+    <div class="group"><h3>Data and messaging</h3><div class="chips"><span class="chip">Kafka</span><span class="chip">MongoDB</span><span class="chip">Elasticsearch</span><span class="chip">Redis</span><span class="chip">MySQL</span><span class="chip">SQL</span></div></div>
+    <div class="group"><h3>Cloud and DevOps</h3><div class="chips"><span class="chip">GCP (GKE, GCS)</span><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">TLS / mTLS</span><span class="chip">Git</span></div></div>
+    <div class="group"><h3>AI and design</h3><div class="chips"><span class="chip">LLM integration (Gemini)</span><span class="chip">Multi-tenant design</span><span class="chip">Event-driven design</span><span class="chip">Role-based access control</span></div></div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="stage">05 / projects</div>
+  <h2>Things I built.</h2>
+  <div class="projects">
+    <div class="proj">
+      <h3>Cryptogram</h3>
+      <p>A real-time chat app where messages are stored encrypted, using AES-256 for messages and RSA to protect the keys. Login uses JWT cookies.</p>
+      <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Socket.io</span><span class="tag">MongoDB</span></div>
+      <a href="https://github.com/mesunnysharma/Cryptogram">Code on GitHub</a>
+    </div>
+    <div class="proj">
+      <h3>Dynamic Scorecard Tool</h3>
+      <p>A web app for performance scoring. Enter or upload data, apply weights, compare entities and see the results in charts and tables.</p>
+      <div class="tags"><span class="tag">React</span><span class="tag">Vite</span></div>
+      <a href="https://github.com/mesunnysharma/ScoreBoard">Code on GitHub</a>
+    </div>
+    <div class="proj">
+      <h3>DDoS Detection with Explainable AI</h3>
+      <p>Final-year project. A machine learning system that detects DDoS attacks and explains its decisions, with a blockchain layer (Hyperledger Sawtooth).</p>
+      <div class="tags"><span class="tag">Python</span><span class="tag">Machine learning</span><span class="tag">XAI</span><span class="tag">Hyperledger Sawtooth</span></div>
+    </div>
+    <div class="proj">
+      <h3>Electricity Bill Management System</h3>
+      <p>A database project for tracking electricity use, billing and customer records.</p>
+      <div class="tags"><span class="tag">SQL</span><span class="tag">DBMS</span></div>
+      <a href="https://github.com/mesunnysharma/Electricity_Bill_Management_System_DBMS_Project">Code on GitHub</a>
+    </div>
+  </div>
+  <p class="note">Work projects at ConvoZen.AI are described under Experience. Their code is private.</p>
+</section>
+
+<section id="contact">
+  <div class="contact">
+    <div>
+      <div class="stage" style="color:var(--paper);opacity:.7">06 / contact</div>
+      <h2>Hiring a backend developer?</h2>
+      <p>I am looking for Java Spring Boot backend roles in Bangalore, remote or with relocation. Write to me, and I will reply within a day.</p>
+    </div>
+    <ul>
+      <li><span>email</span><a href="mailto:8507sunny@gmail.com">8507sunny@gmail.com</a></li>
+      <li><span>linkedin</span><a href="https://www.linkedin.com/in/sunny-kumar-517657229">linkedin.com/in/sunny-kumar-517657229</a></li>
+      <li><span>github</span><a href="https://github.com/mesunnysharma">github.com/mesunnysharma</a></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<div class="wrap">
+  <footer>
+    <span>&copy; 2026 Sunny Kumar</span>
+    <span>Plain HTML and CSS. <a href="#home">Back to top</a></span>
+  </footer>
+</div>
+
+</body>
+</html>
